@@ -109,19 +109,10 @@ const App: React.FC = () => {
   const bgImage = backgroundMap[bgKey] || backgroundMap.Default;
 
   return (
-    <div className="relative min-h-screen w-full grid place-items-center p-4 lg:p-8 bg-[#1a1c1e] overflow-y-auto overflow-x-hidden font-sans">
-      
-      {/* Brand */}
-      <div className="flex flex-col mb-16 relative">
-        <h2 className="text-3xl font-semibold tracking-tighter text-white">WeatherWise</h2>
-        <div className="absolute -bottom-2 left-0 w-16 h-1 bg-gradient-to-r from-white/40 to-transparent rounded-full" />
-        <svg className="absolute -bottom-4 left-0 w-24 h-4 opacity-20" viewBox="0 0 100 20">
-          <path d="M0,10 Q50,0 100,10" fill="none" stroke="white" strokeWidth="2" />
-        </svg>
-      </div>
+    <div className="h-screen overflow-hidden flex items-center justify-center p-4 lg:p-8 bg-[#1a1c1e] font-sans">
       
       {/* Dynamic Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="fixed inset-0 z-0">
         <AnimatePresence mode="wait">
           <motion.img
             key={bgImage}
@@ -148,16 +139,16 @@ const App: React.FC = () => {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
-        className="relative z-10 w-full max-w-[1400px] h-full min-h-[800px] lg:h-[90vh] bg-black/40 backdrop-blur-3xl rounded-[40px] border border-white/10 shadow-2xl overflow-hidden flex"
+        className="relative z-10 w-full max-w-[1400px] h-[90vh] bg-black/40 backdrop-blur-3xl rounded-[40px] border border-white/10 shadow-2xl overflow-hidden flex"
       >
         {/* Left Sidebar */}
         <Sidebar data={weatherData} />
 
         {/* Right Main Content */}
-        <div className="flex-1 flex flex-col p-12 overflow-y-auto overflow-x-hidden text-white">
+<div className="flex-1 flex flex-col p-6 xl:p-8 overflow-hidden text-white">
           
           {/* Top Bar */}
-          <div className="flex justify-between items-center w-full mb-10">
+          <div className="flex justify-between items-center w-full mb-4">
             <div className="flex items-center gap-2 text-white/90">
               <MapPin className="w-4 h-4" />
               <span className="text-sm font-medium">
