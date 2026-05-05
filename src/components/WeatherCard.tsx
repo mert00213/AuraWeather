@@ -17,62 +17,62 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ data, recentSearches, onRecen
     <div className="flex flex-col w-full h-full justify-between">
       
       {/* Middle Section: Temp & Hero Text */}
-      <div className="grid grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-12 gap-8 items-start mb-8">
         
         {/* Left Side: Temp & High/Low */}
-        <div className="col-span-5 flex flex-col gap-6">
-           <div className="flex items-start gap-6">
-              <span className="text-8xl font-extralight tracking-tighter leading-none">{Math.round(data.main.temp)}°</span>
-              <div className="flex flex-col gap-2 mt-2">
-                 <div className="bg-white/10 px-3 py-1.5 rounded-full flex gap-3 text-xs font-light tracking-wider">
-                    <span className="opacity-40">H</span> <span>{Math.round(data.main.temp_max)}°</span>
-                 </div>
-                 <div className="bg-white/10 px-3 py-1.5 rounded-full flex gap-3 text-xs font-light tracking-wider">
-                    <span className="opacity-40">L</span> <span>{Math.round(data.main.temp_min)}°</span>
-                 </div>
-              </div>
-           </div>
+        <div className="col-span-5 flex flex-col gap-12">
+            <div className="flex items-center gap-8">
+               <span className="text-[160px] font-extralight tracking-tighter leading-none">{Math.round(data.main.temp)}°</span>
+               <div className="flex flex-col gap-3">
+                  <div className="bg-white/5 border border-white/10 px-4 py-2 rounded-2xl flex gap-4 text-sm font-light">
+                     <span className="opacity-40">H</span> <span>{Math.round(data.main.temp_max)}°</span>
+                  </div>
+                  <div className="bg-white/5 border border-white/10 px-4 py-2 rounded-2xl flex gap-4 text-sm font-light">
+                     <span className="opacity-40">L</span> <span>{Math.round(data.main.temp_min)}°</span>
+                  </div>
+               </div>
+            </div>
 
-           <div className="flex flex-col">
-              <h1 className="text-6xl font-light tracking-tight leading-[1.1] opacity-90 max-w-xl">
-                 {data.weather[0].main === 'Clear' ? 'Glorious' : 'Stormy'} <br />
-                 <span className="text-white/40 text-5xl">with {data.weather[0].description}</span>
-              </h1>
-           </div>
+            <div className="flex flex-col gap-2">
+               <h1 className="text-7xl font-light tracking-tight leading-[1.1] opacity-90">
+                  {data.weather[0].main === 'Clear' ? 'Glorious' : 'Stormy'} <br />
+                  <span className="text-white/40 text-6xl">with {data.weather[0].description}</span>
+               </h1>
+            </div>
         </div>
 
         {/* Right Side: Recently Searched */}
-        <div className="col-span-7 flex flex-col items-end">
-           <div className="flex flex-col gap-6 w-full max-w-[400px]">
-              <div className="flex justify-between items-center px-2">
-                 <span className="text-[10px] uppercase tracking-[0.3em] opacity-40">Recently Searched</span>
-                 <button className="text-[10px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 flex items-center gap-2">
-                    See All <span>›</span>
+        <div className="col-span-7 flex flex-col items-end pt-4">
+           <div className="flex flex-col gap-6 w-full max-w-[440px]">
+              <div className="flex justify-between items-center px-4">
+                 <span className="text-[11px] uppercase tracking-[0.3em] opacity-40 font-semibold">Recently Searched</span>
+                 <button className="text-[11px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity">
+                    See All ›
                  </button>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-5">
                  {recentSearches.length > 0 ? (
                    recentSearches.map((city, idx) => (
                     <button 
                       key={idx}
                       onClick={() => onRecentClick(city)}
-                      className="bg-white/5 border border-white/10 rounded-[28px] p-6 flex flex-col gap-6 backdrop-blur-xl hover:bg-white/10 transition-all text-left"
+                      className="bg-white/5 border border-white/10 rounded-[32px] p-6 flex flex-col gap-8 backdrop-blur-xl hover:bg-white/15 transition-all text-left group"
                     >
-                       <div className="flex justify-between items-center">
-                          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                             <div className="w-2 h-2 rounded-full bg-white/40" />
+                       <div className="flex justify-between items-start">
+                          <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                             <div className="w-3 h-3 rounded-full bg-white/60" />
                           </div>
-                          <span className="text-2xl font-light">{Math.round(city.main.temp)}°</span>
+                          <span className="text-3xl font-light">{Math.round(city.main.temp)}°</span>
                        </div>
                        <div className="flex flex-col">
-                          <span className="text-sm font-medium truncate">{city.name}, {city.sys.country}</span>
-                          <span className="text-[10px] opacity-40 truncate">{city.weather[0].description}</span>
+                          <span className="text-base font-medium truncate">{city.name}, {city.sys.country}</span>
+                          <span className="text-xs opacity-40 truncate">{city.weather[0].description}</span>
                        </div>
                     </button>
                    ))
                  ) : (
-                   <div className="col-span-2 bg-white/5 border border-white/5 border-dashed rounded-[28px] p-10 flex items-center justify-center text-[10px] uppercase tracking-widest opacity-30">
+                   <div className="col-span-2 bg-white/5 border border-white/5 border-dashed rounded-[32px] p-12 flex items-center justify-center text-xs uppercase tracking-widest opacity-30">
                      No History Yet
                    </div>
                  )}
@@ -82,13 +82,13 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ data, recentSearches, onRecen
       </div>
 
       {/* Bottom Section: Wavy Weekly Forecast */}
-      <div className="w-full min-h-[300px] mt-auto relative pt-10">
-         <div className="absolute top-0 left-0 w-full h-full z-0">
+      <div className="w-full flex-1 min-h-[250px] mt-10 relative">
+         <div className="absolute inset-0 w-full h-full z-0">
            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={trendData} margin={{ top: 80, right: 60, left: 60, bottom: 40 }}>
+              <AreaChart data={trendData} margin={{ top: 40, right: 40, left: 40, bottom: 40 }}>
                  <defs>
                     <linearGradient id="wavyGrad" x1="0" y1="0" x2="0" y2="1">
-                       <stop offset="0%" stopColor="#fff" stopOpacity={0.1} />
+                       <stop offset="0%" stopColor="#fff" stopOpacity={0.15} />
                        <stop offset="100%" stopColor="#fff" stopOpacity={0} />
                     </linearGradient>
                  </defs>
@@ -97,35 +97,42 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ data, recentSearches, onRecen
                     dataKey="day" 
                     axisLine={false} 
                     tickLine={false} 
-                    interval={0}
-                    tick={({ x, y, payload }) => (
-                       <g transform={`translate(${x},${y})`}>
-                          <text x={0} y={-140} dy={0} textAnchor="middle" fill="#fff" className="text-sm font-light opacity-60">
-                             {payload.value}
-                          </text>
-                       </g>
-                    )}
+                    orientation="top"
+                    tick={{ fill: '#fff', fontSize: 16, fontWeight: 300, opacity: 0.9 }}
+                    dy={-10}
                  />
                  
+                 <XAxis 
+                    xAxisId="bottom"
+                    dataKey="day" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    orientation="bottom"
+                    tick={({ x, y, payload, index }) => (
+                       <text x={x} y={y} dy={25} textAnchor="middle" fill="#fff" className="text-3xl font-light opacity-80">
+                          {trendData[index]?.temp ? `${Math.round(trendData[index].temp)}°` : ''}
+                       </text>
+                    )}
+                 />
+
                  <Area 
-                    type="monotone" 
+                    type="basis" 
                     dataKey="temp" 
                     stroke="#fff" 
                     strokeWidth={1.5} 
                     fill="url(#wavyGrad)" 
-                    dot={({ cx, cy, payload }) => (
-                       <g>
-                          <text x={cx || 0} y={(cy || 0) + 45} textAnchor="middle" fill="#fff" className="text-4xl font-extralight tracking-tighter">
-                             {Math.round(payload.temp)}°
-                          </text>
-                          {payload.day === 'Wed' && (
-                             <g>
-                                <circle cx={cx || 0} cy={cy || 0} r={6} fill="#fff" className="shadow-2xl" />
-                                <line x1={cx || 0} y1={cy || 0} x2={cx || 0} y2={(cy || 0) + 30} stroke="#fff" strokeDasharray="2 2" opacity={0.4} />
-                             </g>
-                          )}
-                       </g>
-                    )}
+                    activeDot={{ r: 8, fill: '#fff', className: "shadow-[0_0_15px_rgba(255,255,255,1)]" }}
+                    dot={({ cx, cy, index }) => {
+                       if (index === 3) {
+                         return (
+                           <g key={`dot-${index}`}>
+                              <circle cx={cx || 0} cy={cy || 0} r={6} fill="#fff" className="shadow-[0_0_20px_rgba(255,255,255,1)] drop-shadow-[0_0_10px_white]" />
+                              <line x1={cx || 0} y1={cy || 0} x2={cx || 0} y2={(cy || 0) + 120} stroke="#fff" strokeDasharray="2 2" opacity={0.4} />
+                           </g>
+                         );
+                       }
+                       return <circle key={`dot-${index}`} cx={cx || 0} cy={cy || 0} r={4} fill="#fff" opacity={0.3} />;
+                    }}
                  />
               </AreaChart>
            </ResponsiveContainer>

@@ -7,13 +7,13 @@ import Sidebar from './components/Sidebar';
 import { fetchWeather, type WeatherData } from './services/weatherService';
 
 const backgroundMap: Record<string, string> = {
-  Clear: 'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?q=80&w=2560&auto=format&fit=crop',
-  Clouds: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=2551&auto=format&fit=crop',
-  Rain: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?q=80&w=2574&auto=format&fit=crop',
+  Clear: 'https://images.unsplash.com/photo-1501426026826-31c667bdf23d?q=80&w=2560&auto=format&fit=crop',
+  Clouds: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=2560&auto=format&fit=crop',
+  Rain: 'https://images.unsplash.com/photo-1511634829096-045a111727eb?q=80&w=2560&auto=format&fit=crop',
   Drizzle: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=2570&auto=format&fit=crop',
-  Thunderstorm: 'https://images.unsplash.com/photo-1605727216801-e27ce1d0ce49?q=80&w=2670&auto=format&fit=crop',
-  Snow: 'https://images.unsplash.com/photo-1514828260103-1e9bf9a58446?q=80&w=2670&auto=format&fit=crop',
-  Default: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?q=80&w=2560&auto=format&fit=crop'
+  Thunderstorm: 'https://images.unsplash.com/photo-1551234250-1896803920c8?q=80&w=2560&auto=format&fit=crop',
+  Snow: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2560&auto=format&fit=crop',
+  Default: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=2560&auto=format&fit=crop'
 };
 
 const App: React.FC = () => {
@@ -47,7 +47,16 @@ const App: React.FC = () => {
   const bgImage = backgroundMap[weatherMain] || backgroundMap.Default;
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center p-4 bg-[#1a1c1e] overflow-hidden font-sans">
+    <div className="relative min-h-screen w-full grid place-items-center p-4 lg:p-8 bg-[#1a1c1e] overflow-y-auto overflow-x-hidden font-sans">
+      
+      {/* Brand */}
+      <div className="flex flex-col mb-16 relative">
+        <h2 className="text-3xl font-semibold tracking-tighter text-white">WeatherWise</h2>
+        <div className="absolute -bottom-2 left-0 w-16 h-1 bg-gradient-to-r from-white/40 to-transparent rounded-full" />
+        <svg className="absolute -bottom-4 left-0 w-24 h-4 opacity-20" viewBox="0 0 100 20">
+          <path d="M0,10 Q50,0 100,10" fill="none" stroke="white" strokeWidth="2" />
+        </svg>
+      </div>
       
       {/* Dynamic Background */}
       <div className="absolute inset-0 z-0">
@@ -57,13 +66,13 @@ const App: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 2 }}
+            transition={{ duration: 1.5 }}
             src={bgImage}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover scale-105"
             alt="weather-bg"
           />
         </AnimatePresence>
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-[10px]" />
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[6px]" />
       </div>
 
       {/* Main UI Container */}
@@ -71,30 +80,28 @@ const App: React.FC = () => {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
-        className="relative z-10 w-full max-w-[1400px] h-[90vh] bg-black/40 backdrop-blur-3xl rounded-[40px] border border-white/10 shadow-2xl overflow-hidden flex"
+        className="relative z-10 w-full max-w-[1400px] h-full min-h-[800px] lg:h-[90vh] bg-black/40 backdrop-blur-3xl rounded-[40px] border border-white/10 shadow-2xl overflow-hidden flex"
       >
         {/* Left Sidebar */}
         <Sidebar data={weatherData} />
 
         {/* Right Main Content */}
-        <div className="flex-1 flex flex-col p-12 overflow-hidden text-white">
+        <div className="flex-1 flex flex-col p-12 overflow-y-auto overflow-x-hidden text-white">
           
           {/* Top Bar */}
-          <div className="flex justify-between items-center w-full mb-6">
-            <div className="flex items-center gap-3">
-              <MapPin className="w-5 h-5 text-white/60" />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium tracking-wide">
-                  {weatherData ? `${weatherData.name}, ${weatherData.sys.country}` : 'Select a City'}
-                </span>
-                <span className="text-[10px] opacity-40 uppercase tracking-widest">
-                  {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-                </span>
-              </div>
+          <div className="flex justify-between items-center w-full mb-10">
+            <div className="flex items-center gap-2 text-white/90">
+              <MapPin className="w-4 h-4" />
+              <span className="text-sm font-medium">
+                {weatherData ? `${weatherData.name}, ${weatherData.sys.country}` : 'Brooklyn, New York, USA'}
+              </span>
+              <span className="text-sm opacity-40 ml-2">
+                ({new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })})
+              </span>
             </div>
             
             <div className="flex items-center gap-4">
-               <div className="w-64">
+               <div className="w-72">
                  <SearchBar onSearch={handleSearch} />
                </div>
             </div>

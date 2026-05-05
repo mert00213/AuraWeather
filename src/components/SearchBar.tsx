@@ -17,22 +17,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative w-full">
+    <form onSubmit={handleSubmit} className="relative w-full group">
       <div className="relative flex items-center">
         <input
           type="text"
-          placeholder="Şehir ara..."
+          placeholder="Search location..."
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className="w-full bg-white/5 border border-white/20 rounded-full py-3 pl-12 pr-4 text-white placeholder-white/50 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 shadow-inner"
+          className="w-full bg-white/5 border border-white/10 rounded-full py-2.5 pl-12 pr-4 text-sm text-white placeholder-white/30 backdrop-blur-xl focus:outline-none focus:bg-white/10 focus:border-white/20 transition-all duration-500"
         />
-        <Search className="absolute left-4 text-white/50 w-5 h-5 pointer-events-none" />
-        <button
-          type="submit"
-          className="absolute right-2 px-4 py-1.5 bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-medium rounded-full backdrop-blur-sm transition-all duration-300"
-        >
-          Ara
-        </button>
+        <Search className="absolute left-4 text-white/40 w-4 h-4 pointer-events-none group-focus-within:text-white/70 transition-colors" />
       </div>
     </form>
   );

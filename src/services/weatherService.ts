@@ -72,7 +72,7 @@ export const fetchWeather = async (city: string): Promise<WeatherData> => {
     const trend = daily.time.map((timeStr: string, index: number) => {
       const date = new Date(timeStr);
       return {
-        day: date.toLocaleDateString('en-US', { weekday: 'short' }),
+        day: date.toLocaleDateString('en-US', { weekday: 'long' }),
         temp: Math.round(daily.temperature_2m_max[index]),
       };
     });
