@@ -27,28 +27,28 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
   const { bgPosX, pinTop } = getMapPosition();
 
   return (
-    <div className="w-[380px] h-full bg-white/[0.03] border-r border-white/5 flex flex-col p-10 backdrop-blur-xl">
+    <div className="w-[320px] h-full bg-white/[0.03] border-r border-white/5 flex flex-col p-5 backdrop-blur-xl text-white overflow-hidden">
       
       {/* Brand */}
-      <div className="flex flex-col mb-16 relative">
-        <h2 className="text-3xl font-semibold tracking-tighter text-white">WeatherWise</h2>
-        <svg className="absolute -bottom-6 left-0 w-32 h-6 opacity-30" viewBox="0 0 100 20">
+      <div className="flex flex-col mb-5 relative">
+        <h2 className="text-2xl font-semibold tracking-tighter text-white">WeatherWise</h2>
+        <svg className="absolute -bottom-4 left-0 w-24 h-4 opacity-30" viewBox="0 0 100 20">
           <path d="M0,10 Q50,0 100,10" fill="none" stroke="white" strokeWidth="1.5" />
         </svg>
       </div>
 
       {/* Status Card */}
-      <div className="flex flex-col gap-4 mb-14">
-        <span className="text-[11px] uppercase tracking-[0.3em] opacity-40 font-bold">Status</span>
-        <div className="bg-white/5 border border-white/10 rounded-[32px] p-8 flex flex-col relative overflow-hidden group backdrop-blur-2xl">
-          <div className="flex justify-between items-start mb-8">
+      <div className="flex flex-col gap-3 mb-4">
+        <span className="text-[11px] uppercase tracking-[0.3em] opacity-60 font-bold">Status</span>
+        <div className="bg-white/5 border border-white/10 rounded-[32px] p-4 flex flex-col relative overflow-hidden group backdrop-blur-2xl">
+          <div className="flex justify-between items-start mb-3">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold opacity-60">↑ 23.8%</span>
+              <span className="text-sm font-semibold opacity-80">↑ 23.8%</span>
             </div>
             <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-[10px] opacity-60">?</div>
           </div>
 
-          <div className="h-32 w-full mb-6 relative">
+          <div className="h-20 w-full mb-3 relative">
              <ResponsiveContainer width="100%" height="100%">
                <AreaChart data={miniChartData}>
                  <defs>
@@ -79,9 +79,9 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
       </div>
 
       {/* Select Area Section - Carousel Look */}
-      <div className="flex-1 flex flex-col gap-6 relative">
+      <div className="flex-1 flex flex-col gap-3 relative">
         <div className="flex justify-between items-center z-10">
-           <span className="text-[10px] uppercase tracking-[0.3em] opacity-40 font-medium">Select Area</span>
+           <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-medium">Select Area</span>
            <div className="flex items-center gap-3">
              <Navigation className="w-4 h-4 rotate-[15deg] fill-white opacity-80" />
              <div className="flex gap-1.5">
@@ -103,7 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
            <div className="absolute w-32 h-32 bg-orange-600/20 rounded-full blur-[40px] mt-20" />
            
            {/* Main Globe */}
-           <div className="relative w-64 h-64 bg-black/40 rounded-full overflow-hidden shadow-2xl">
+           <div className="relative w-40 h-40 bg-black/40 rounded-full overflow-hidden shadow-2xl">
               <motion.div 
                 animate={{ backgroundPositionX: bgPosX }}
                 transition={{ type: "spring", damping: 30, stiffness: 50 }}
@@ -135,7 +135,7 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
            </div>
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-full py-4 px-8 text-center text-xs font-light tracking-widest backdrop-blur-md">
+        <div className="bg-white/5 border border-white/10 rounded-full py-2 px-4 text-center text-xs font-light tracking-widest backdrop-blur-md">
            {data ? `${data.name}, ${data.sys.country}` : 'Brooklyn, New York, USA'}
         </div>
       </div>
