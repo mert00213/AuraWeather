@@ -7,7 +7,8 @@ import Sidebar from './components/Sidebar';
 import { fetchWeather, type WeatherData } from './services/weatherService';
 
 const backgroundMap: Record<string, string> = {
-  Clear: 'https://images.unsplash.com/photo-1501426026826-31c667bdf23d?q=80&w=2560&auto=format&fit=crop',
+  Clear: 'https://images.unsplash.com/photo-1464618663641-bbdd760ae84a?q=80&w=2560&auto=format&fit=crop',
+  ClearCold: 'https://images.unsplash.com/photo-1483347756197-71ef80e95f73?q=80&w=2560&auto=format&fit=crop',
   Clouds: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=2560&auto=format&fit=crop',
   Rain: 'https://images.unsplash.com/photo-1511634829096-045a111727eb?q=80&w=2560&auto=format&fit=crop',
   Drizzle: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=2570&auto=format&fit=crop',
@@ -15,6 +16,60 @@ const backgroundMap: Record<string, string> = {
   Snow: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2560&auto=format&fit=crop',
   Default: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=2560&auto=format&fit=crop'
 };
+
+const Rain = () => (
+  <div className="rain-container">
+    {[...Array(50)].map((_, i) => (
+      <div 
+        key={i} 
+        className="rain-drop" 
+        style={{ 
+          left: `${Math.random() * 100}%`, 
+          animationDuration: `${0.5 + Math.random() * 0.5}s`,
+          animationDelay: `${Math.random() * 2}s`,
+          opacity: Math.random() * 0.5
+        }} 
+      />
+    ))}
+  </div>
+);
+
+const Snow = () => (
+  <div className="snow-container">
+    {[...Array(50)].map((_, i) => (
+      <div 
+        key={i} 
+        className="snow-flake" 
+        style={{ 
+          left: `${Math.random() * 100}%`, 
+          animationDuration: `${3 + Math.random() * 5}s`,
+          animationDelay: `${Math.random() * 5}s`,
+          opacity: Math.random() * 0.5
+        }} 
+      />
+    ))}
+  </div>
+);
+
+const SunnyGlow = () => <div className="sunny-glow" />;
+
+const CloudsEffect = () => (
+  <div className="cloud-container">
+    {[...Array(3)].map((_, i) => (
+      <div 
+        key={i} 
+        className="cloud-drift" 
+        style={{ 
+          top: `${20 + i * 20}%`, 
+          width: `${300 + Math.random() * 400}px`,
+          height: `${200 + Math.random() * 300}px`,
+          animationDuration: `${20 + Math.random() * 40}s`,
+          animationDelay: `${-Math.random() * 40}s`
+        }} 
+      />
+    ))}
+  </div>
+);
 
 const App: React.FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -44,7 +99,14 @@ const App: React.FC = () => {
   };
 
   const weatherMain = weatherData?.weather?.[0]?.main || 'Default';
-  const bgImage = backgroundMap[weatherMain] || backgroundMap.Default;
+  const currentTemp = weatherData?.main?.temp || 20;
+  
+  let bgKey = weatherMain;
+  if (weatherMain === 'Clear' && currentTemp < 10) {
+    bgKey = 'ClearCold';
+  }
+  
+  const bgImage = backgroundMap[bgKey] || backgroundMap.Default;
 
   return (
     <div className="relative min-h-screen w-full grid place-items-center p-4 lg:p-8 bg-[#1a1c1e] overflow-y-auto overflow-x-hidden font-sans">
@@ -73,6 +135,12 @@ const App: React.FC = () => {
           />
         </AnimatePresence>
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[6px]" />
+        
+        {/* Animated Weather Overlays */}
+        {weatherMain === 'Rain' || weatherMain === 'Drizzle' || weatherMain === 'Thunderstorm' ? <Rain /> : null}
+        {weatherMain === 'Snow' ? <Snow /> : null}
+        {weatherMain === 'Clear' ? <SunnyGlow /> : null}
+        {weatherMain === 'Clouds' ? <CloudsEffect /> : null}
       </div>
 
       {/* Main UI Container */}
