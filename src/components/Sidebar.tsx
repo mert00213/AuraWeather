@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Navigation, Info } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { type WeatherData } from '../services/weatherService';
+import DailyInsight from './DailyInsight';
 
 interface SidebarProps {
   data: WeatherData | null;
@@ -74,7 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
   const { bgPosX, pinTop } = getMapPosition();
 
   return (
-    <div className="w-[320px] h-full bg-white/[0.03] border-r border-white/5 flex flex-col p-5 backdrop-blur-xl text-white">
+    <div className="w-[320px] h-full bg-white/[0.03] border-r border-white/5 flex flex-col p-5 backdrop-blur-xl text-white overflow-y-auto custom-scrollbar">
       
       {/* Brand */}
       <div className="flex flex-col mb-5 relative">
@@ -165,13 +166,13 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
       </div>
 
       {/* Select Area Section - Carousel Look */}
-      <div className="flex-1 flex flex-col gap-3 relative">
+      <div className="flex flex-col gap-3 relative">
          <div className="flex justify-between items-center z-10">
             <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-medium">Select Area</span>
             <Navigation className="w-4 h-4 rotate-[15deg] fill-white opacity-80" />
          </div>
 
-        <div className="relative flex-1 flex items-center justify-center overflow-hidden">
+        <div className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: '160px' }}>
            
            {/* Side Globes (Carousel effect) */}
            <div className="absolute -left-40 w-52 h-52 bg-white/5 rounded-full blur-[1px] opacity-10 border border-white/10" />
@@ -182,7 +183,7 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
            <div className="absolute w-32 h-32 bg-orange-600/20 rounded-full blur-[40px] mt-20" />
            
            {/* Main Globe */}
-           <div className="relative w-40 h-40 bg-black/40 rounded-full overflow-hidden shadow-2xl">
+           <div className="relative w-36 h-36 bg-black/40 rounded-full overflow-hidden shadow-2xl">
               <motion.div 
                 animate={{ backgroundPositionX: bgPosX }}
                 transition={{ type: "spring", damping: 30, stiffness: 50 }}
@@ -218,6 +219,9 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
            {data ? `${data.name}, ${data.sys.country}` : 'Brooklyn, New York, USA'}
         </div>
       </div>
+
+      {/* Smart Insights — AI Daily Recommendations */}
+      <DailyInsight data={data} />
 
     </div>
   );
