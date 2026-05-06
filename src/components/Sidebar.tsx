@@ -166,17 +166,10 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
 
       {/* Select Area Section - Carousel Look */}
       <div className="flex-1 flex flex-col gap-3 relative">
-        <div className="flex justify-between items-center z-10">
-           <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-medium">Select Area</span>
-           <div className="flex items-center gap-3">
-             <Navigation className="w-4 h-4 rotate-[15deg] fill-white opacity-80" />
-             <div className="flex gap-1.5">
-               <div className="w-1.5 h-1.5 rounded-full bg-white" />
-               <div className="w-1.5 h-1.5 rounded-full border border-white/40" />
-               <div className="w-1.5 h-1.5 rounded-full border border-white/40" />
-             </div>
-           </div>
-        </div>
+         <div className="flex justify-between items-center z-10">
+            <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-medium">Select Area</span>
+            <Navigation className="w-4 h-4 rotate-[15deg] fill-white opacity-80" />
+         </div>
 
         <div className="relative flex-1 flex items-center justify-center overflow-hidden">
            

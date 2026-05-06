@@ -1,68 +1,104 @@
+# 🌌 AuraWeather: Cinematic Weather Dashboard
+
 <div align="center">
+  <img src="src/assets/backgrounds/clear.png" width="100%" alt="AuraWeather Hero" style="border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);" />
 
-# 🌌 WeatherWise (AuraWeather)
-### *Hava Durumu Zekası ve Atmosferik Deneyimin Buluşma Noktası*
+  <p align="center">
+    <strong>Experience weather like never before.</strong>
+    <br />
+    A premium, high-end dashboard combining real-time meteorological intelligence with cinematic visual storytelling.
+  </p>
 
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
-
-**WeatherWise**, gerçek zamanlı meteorolojik verileri sinematik ve atmosferik bir kullanıcı deneyimiyle harmanlayan yeni nesil bir hava durumu panelidir. Modern estetik ve akıcı etkileşimlere odaklanılarak geliştirilmiştir.
-
-[Özellikler](#-özellikler) • [Teknoloji Yığını](#-teknoloji-yığını) • [Kurulum](#-kurulum)
+  [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+  [![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
 </div>
 
 ---
 
-## ✨ Özellikler
+## 🎭 The Cinematic Experience
 
-- **🎭 Dinamik Atmosfer**: Kullanıcı arayüzü, gerçek zamanlı hava koşullarına (Yağmur, Kar, Güneş Işığı, Süzülen Bulutlar) göre dinamik olarak değişen arka planlara ve parçacık efektlerine sahiptir.
-- **🧊 Glassmorphism Tasarım**: Modern ve premium hissettiren, yarı saydam ve şık bir arayüz.
-- **📊 Gelişmiş Durum Paneli**: UV İndeksi ve Nem oranlarına göre dinamik sağlık ve konfor uyarıları sunan "Status" bölümü.
-- **📈 İnteraktif Grafikler**: Recharts tabanlı dalgalı grafiklerle sıcaklık trendlerini yüksek hassasiyetle görselleştirin.
-- **🔍 Akıllı Arama ve Geçmiş**: Şehirleri anında bulun ve gelişmiş geçmiş modalı sayesinde son 10 aramanıza hızlıca erişin.
-- **🌡️ Akıllı Görsel Mantık**: "Açık Gökyüzü" ile "Soğuk Açık Gökyüzü" arasındaki farkı algılayarak mükemmel görsel bağlam sunar (Örn: Karlı Oslo vs Güneşli Madrid).
-- **🌍 Dinamik Dünya Haritası**: Seçilen konumu gerçek dünya koordinatlarına göre işaretleyen etkileşimli sidebar haritası.
+AuraWeather isn't just a data panel; it's an atmospheric immersion.
 
-## 🛠 Teknoloji Yığını
+- **🎞️ Cinematic Backgrounds**: Features high-resolution, locally-hosted atmospheric visuals that change dynamically based on weather codes and time-of-day (Sunset, Sunrise, Night, Day).
+- **🌊 Professional Multi-Layer Animations**: 
+    - **Rain**: 3-layer depth with foreground splashes, mid-rain, and background mist.
+    - **Snow**: Triple-layered snowfall with wind sway, blurring, and ground shimmer.
+    - **Thunderstorm**: High-intensity rain combined with volumetric lightning flashes and bolts.
+    - **Mist/Fog**: Multi-directional rolling fog layers for true atmospheric depth.
+    - **Sunny Glow**: Pulsing golden hour glow with rotating light rays.
+- **🧊 Advanced Glassmorphism**: A state-of-the-art UI system built with complex backdrop filters, subtle gradients, and premium typography.
 
-- **Frontend**: [React.js](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Vanilla CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) + [Tailwind CSS](https://tailwindcss.com/) (Özel temalar)
-- **Animasyonlar**: [Framer Motion](https://www.framer.com/motion/)
-- **Grafikler**: [Recharts](https://recharts.org/)
-- **İkonlar**: [Lucide React](https://lucide.dev/)
-- **API**: [Open-Meteo](https://open-meteo.com/) (Ücretsiz, API Key gerektirmez)
-- **Build Tool**: [Vite](https://vitejs.dev/)
+---
 
-## 🚀 Kurulum
+## 🧠 Core Intelligence
 
-1. **Projeyi klonlayın**
+- **🌍 Global Geo-Intelligence**: Powered by the Open-Meteo API for real-time global weather data without the need for API keys.
+- **🕒 Time-Aware UI**: Automatically detects the searched city's sunrise/sunset times to shift the visual mood (e.g., transitioning to a Starry Night or a Golden Sunset).
+- **📈 High-Precision Analytics**: Responsive temperature trend charts using Recharts with a custom wavy basis-type visualization.
+- **🛡️ Biometric Status Alerts**: A smart "Status" module that analyzes UV Index and Humidity to provide health and comfort recommendations.
+- **📜 Smart Search History**: Quickly toggle between your last 10 searched cities with a dedicated high-end modal interface.
+
+---
+
+## 🛠 Tech Stack
+
+- **Core**: React 18, TypeScript, Vite
+- **Animations**: Framer Motion (Orchestration & Particle Effects)
+- **Charts**: Recharts (Custom SVG Visuals)
+- **Icons**: Lucide React
+- **Styles**: PostCSS & Tailwind CSS (Custom Design Tokens)
+- **Data**: Open-Meteo Geocoding & Forecast APIs
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+1. **Clone the repository**
    ```bash
    git clone https://github.com/mert00213/AuraWeather.git
    cd AuraWeather
    ```
 
-2. **Bağımlılıkları yükleyin**
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Geliştirme sunucusunu başlatın**
+3. **Launch the Cinematic Experience**
    ```bash
    npm run dev
    ```
 
-## 📸 Görseller
+---
+
+## 🌌 Visual Gallery
 
 <div align="center">
-  <img src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=1000" width="45%" alt="Cloudy Dashboard" />
-  <img src="https://images.unsplash.com/photo-1464618663641-bbdd760ae84a?q=80&w=1000" width="45%" alt="Sunny Dashboard" />
+  <table style="width: 100%; border-collapse: collapse; border: none;">
+    <tr>
+      <td style="width: 50%; padding: 5px;"><img src="src/assets/backgrounds/stormy.png" width="100%" style="border-radius: 10px;" alt="Stormy View" /></td>
+      <td style="width: 50%; padding: 5px;"><img src="src/assets/backgrounds/sunset.png" width="100%" style="border-radius: 10px;" alt="Sunset View" /></td>
+    </tr>
+    <tr>
+      <td style="width: 50%; padding: 5px;"><img src="src/assets/backgrounds/snowy.png" width="100%" style="border-radius: 10px;" alt="Snowy View" /></td>
+      <td style="width: 50%; padding: 5px;"><img src="src/assets/backgrounds/night.png" width="100%" style="border-radius: 10px;" alt="Night View" /></td>
+    </tr>
+  </table>
 </div>
 
 ---
 
 <div align="center">
-❤️ **Mert İlhan Dündar** tarafından geliştirildi.
+  Developed with ❤️ by <strong>Mert İlhan Dündar</strong>. 
+  <br />
+  AuraWeather is open for contributions and meteorological exploration.
 </div>
