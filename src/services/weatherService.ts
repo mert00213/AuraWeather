@@ -30,6 +30,9 @@ export interface WeatherData {
     lat: number;
     lon: number;
   };
+  clouds?: {
+    all: number;
+  };
 }
 
 const mapWmoToOwm = (code: number): { main: string; description: string } => {
@@ -37,7 +40,7 @@ const mapWmoToOwm = (code: number): { main: string; description: string } => {
   if (code === 1) return { main: 'Clouds', description: 'mainly clear' };
   if (code === 2) return { main: 'Clouds', description: 'partly cloudy' };
   if (code === 3) return { main: 'Clouds', description: 'overcast' };
-  if (code === 45 || code === 48) return { main: 'Clouds', description: 'fog' };
+  if (code === 45 || code === 48) return { main: 'Mist', description: 'fog' };
   if (code >= 51 && code <= 57) return { main: 'Drizzle', description: 'drizzle' };
   if (code >= 61 && code <= 67) return { main: 'Rain', description: 'rain' };
   if (code >= 71 && code <= 77) return { main: 'Snow', description: 'snow' };
@@ -107,6 +110,9 @@ export const fetchWeather = async (city: string): Promise<WeatherData> => {
       wind: {
         speed: current.wind_speed_10m,
         deg: current.wind_direction_10m,
+      },
+      clouds: {
+        all: current.weather_code === 3 ? 90 : current.weather_code === 2 ? 50 : current.weather_code === 1 ? 25 : 0,
       },
       trend: trend,
     };

@@ -6,15 +6,33 @@ import WeatherCard from './components/WeatherCard';
 import Sidebar from './components/Sidebar';
 import { fetchWeather, type WeatherData } from './services/weatherService';
 
+// Local premium background images
+import bgClear from './assets/backgrounds/clear.png';
+import bgSunset from './assets/backgrounds/sunset.png';
+import bgPartlyCloudy from './assets/backgrounds/partly_cloudy.png';
+import bgOvercast from './assets/backgrounds/overcast.png';
+import bgRainy from './assets/backgrounds/rainy.png';
+import bgStormy from './assets/backgrounds/stormy.png';
+import bgSnowy from './assets/backgrounds/snowy.png';
+import bgFoggy from './assets/backgrounds/foggy.png';
+import bgNight from './assets/backgrounds/night.png';
+
 const backgroundMap: Record<string, string> = {
-  Clear: 'https://images.unsplash.com/photo-1464618663641-bbdd760ae84a?q=80&w=2560&auto=format&fit=crop',
-  ClearCold: 'https://images.unsplash.com/photo-1483347756197-71ef80e95f73?q=80&w=2560&auto=format&fit=crop',
-  Clouds: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=2560&auto=format&fit=crop',
-  Rain: 'https://images.unsplash.com/photo-1511634829096-045a111727eb?q=80&w=2560&auto=format&fit=crop',
-  Drizzle: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=2570&auto=format&fit=crop',
-  Thunderstorm: 'https://images.unsplash.com/photo-1551234250-1896803920c8?q=80&w=2560&auto=format&fit=crop',
-  Snow: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2560&auto=format&fit=crop',
-  Default: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=2560&auto=format&fit=crop'
+  Clear: bgClear,
+  ClearNight: bgNight,
+  Sunset: bgSunset,
+  Clouds: bgPartlyCloudy,
+  OvercastClouds: bgOvercast,
+  Rain: bgRainy,
+  Drizzle: bgRainy,
+  Thunderstorm: bgStormy,
+  Snow: bgSnowy,
+  Mist: bgFoggy,
+  Haze: bgFoggy,
+  Fog: bgFoggy,
+  Smoke: bgFoggy,
+  Dust: bgFoggy,
+  Default: bgClear,
 };
 
 const Rain = () => (
@@ -77,7 +95,6 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [recentSearches, setRecentSearches] = useState<WeatherData[]>([]);
   const [showHistory, setShowHistory] = useState(false);
-
   const handleSearch = async (city: string) => {
     setLoading(true);
     setError(null);
@@ -85,7 +102,7 @@ const App: React.FC = () => {
       const data = await fetchWeather(city);
       setWeatherData(data);
       
-      // Update recent searches (avoid duplicates and keep last 2)
+      // Update recent searches (avoid duplicates and keep last 10)
       setRecentSearches(prev => {
         const filtered = prev.filter(item => item.name !== data.name);
         return [data, ...filtered].slice(0, 10);
@@ -100,13 +117,32 @@ const App: React.FC = () => {
   };
 
   const weatherMain = weatherData?.weather?.[0]?.main || 'Default';
-  const currentTemp = weatherData?.main?.temp || 20;
+  const cloudiness = weatherData?.clouds?.all || 0;
   
-  let bgKey = weatherMain;
-  if (weatherMain === 'Clear' && currentTemp < 10) {
-    bgKey = 'ClearCold';
-  }
+  // Intelligent background selection with time-of-day awareness
+  const getBackgroundKey = (): string => {
+    if (!weatherData) return 'Default';
+    
+    const now = Math.floor(Date.now() / 1000);
+    const sunrise = weatherData.sys.sunrise;
+    const sunset = weatherData.sys.sunset;
+    const isNight = now < sunrise || now > sunset;
+    const isSunsetHour = now > (sunset - 3600) && now <= sunset;
+    
+    if (weatherMain === 'Clear') {
+      if (isNight) return 'ClearNight';
+      if (isSunsetHour) return 'Sunset';
+      return 'Clear';
+    }
+    
+    if (weatherMain === 'Clouds') {
+      return cloudiness > 70 ? 'OvercastClouds' : 'Clouds';
+    }
+    
+    return weatherMain;
+  };
   
+  const bgKey = getBackgroundKey();
   const bgImage = backgroundMap[bgKey] || backgroundMap.Default;
 
   return (
@@ -115,18 +151,22 @@ const App: React.FC = () => {
       {/* Dynamic Background */}
       <div className="fixed inset-0 z-0">
         <AnimatePresence mode="wait">
-          <motion.img
+          <motion.div
             key={bgImage}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5 }}
-            src={bgImage}
-            className="w-full h-full object-cover scale-105"
-            alt="weather-bg"
-          />
+            className="absolute inset-0"
+          >
+            <img
+              src={bgImage}
+              className="w-full h-full object-cover scale-105"
+              alt="weather-bg"
+            />
+          </motion.div>
         </AnimatePresence>
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[6px]" />
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
         
         {/* Animated Weather Overlays */}
         {weatherMain === 'Rain' || weatherMain === 'Drizzle' || weatherMain === 'Thunderstorm' ? <Rain /> : null}
