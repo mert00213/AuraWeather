@@ -6,9 +6,10 @@ interface WeatherCardProps {
    data: WeatherData;
    recentSearches: WeatherData[];
    onRecentClick: (data: WeatherData) => void;
+   onSeeAll: () => void;
 }
 
-const WeatherCard: React.FC<WeatherCardProps> = ({ data, recentSearches, onRecentClick }) => {
+const WeatherCard: React.FC<WeatherCardProps> = ({ data, recentSearches, onRecentClick, onSeeAll }) => {
    if (!data) return null;
 
    const trendData = data.trend || [];
@@ -46,7 +47,10 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ data, recentSearches, onRecen
            <div className="flex flex-col gap-3 w-full max-w-[440px]">
               <div className="flex justify-between items-center px-4">
                  <span className="text-[11px] uppercase tracking-[0.3em] opacity-60 font-semibold">Recently Searched</span>
-                 <button className="text-[11px] uppercase tracking-[0.3em] opacity-60 hover:opacity-100 transition-opacity">
+                 <button 
+                  onClick={onSeeAll}
+                  className="text-[11px] uppercase tracking-[0.3em] opacity-60 hover:opacity-100 transition-opacity"
+                 >
                     See All ›
                  </button>
               </div>
@@ -108,7 +112,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ data, recentSearches, onRecen
                     axisLine={false} 
                     tickLine={false} 
                     orientation="bottom"
-                    tick={({ x, y, payload, index }) => (
+                    tick={({ x, y, index }: any) => (
                        <text x={x} y={y} dy={25} textAnchor="middle" fill="#fff" className="text-3xl font-light opacity-80">
                           {trendData[index]?.temp ? `${Math.round(trendData[index].temp)}°` : ''}
                        </text>

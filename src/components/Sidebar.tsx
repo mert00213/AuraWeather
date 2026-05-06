@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ChevronRight, Navigation } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, Navigation, Info } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { type WeatherData } from '../services/weatherService';
 
@@ -8,11 +8,8 @@ interface SidebarProps {
   data: WeatherData | null;
 }
 
-const miniChartData = [
-  { val: 10 }, { val: 12 }, { val: 25 }, { val: 18 }, { val: 30 }, { val: 45 }, { val: 35 }
-];
-
 const Sidebar: React.FC<SidebarProps> = ({ data }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
   
   const getMapPosition = () => {
     if (!data?.coord) return { bgPosX: 0, pinTop: 50 };
@@ -24,10 +21,60 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
     };
   };
 
+  const getStatusInfo = (uvIndex: number = 0, humidity: number = 0) => {
+    let label = 'Düşük Risk';
+    let color = '#10b981';
+    let description = '';
+
+    if (uvIndex <= 2) {
+      label = 'Düşük Risk';
+      color = '#10b981';
+      description = 'UV İndeksi düşük. Özel bir koruma olmadan dışarıda vakit geçirmek güvenlidir.';
+    } else if (uvIndex <= 5) {
+      label = 'Orta';
+      color = '#f59e0b';
+      description = 'Orta seviye UV. Öğle saatlerinde gölgede kalın ve güneş kremi kullanın.';
+    } else if (uvIndex <= 7) {
+      label = 'Yüksek Risk';
+      color = '#f97316';
+      description = 'Yüksek UV seviyesi. Korunma gereklidir (şapka, güneş kremi, güneş gözlüğü).';
+    } else if (uvIndex <= 10) {
+      label = 'Çok Yüksek';
+      color = '#ef4444';
+      description = 'Korunmasız güneşe maruz kalma durumunda çok yüksek zarar riski. 11:00 - 16:00 arası güneşten kaçının.';
+    } else {
+      label = 'Ekstrem';
+      color = '#7f1d1d';
+      description = 'Ekstrem risk! Korunmasız cilt ve gözler dakikalar içinde yanabilir. Mümkünse içeride kalın.';
+    }
+
+    if (humidity > 70) {
+      description += ' Yüksek nem, havanın daha sıcak ve boğucu hissedilmesine neden olabilir.';
+    } else if (humidity < 30) {
+      description += ' Düşük nem, cilt kuruluğuna ve boğaz tahrişine yol açabilir.';
+    }
+
+    return { label, color, description };
+  };
+
+  const humidity = data?.main.humidity || 0;
+  const statusInfo = getStatusInfo(data?.main.uv_index, humidity);
+
+  // Generate a mini chart data that looks dynamic
+  const dynamicMiniChart = [
+    { val: Math.max(0, humidity - 15) },
+    { val: Math.max(0, humidity - 5) },
+    { val: humidity },
+    { val: Math.min(100, humidity + 10) },
+    { val: humidity },
+    { val: Math.max(0, humidity - 10) },
+    { val: humidity },
+  ];
+
   const { bgPosX, pinTop } = getMapPosition();
 
   return (
-    <div className="w-[320px] h-full bg-white/[0.03] border-r border-white/5 flex flex-col p-5 backdrop-blur-xl text-white overflow-hidden">
+    <div className="w-[320px] h-full bg-white/[0.03] border-r border-white/5 flex flex-col p-5 backdrop-blur-xl text-white">
       
       {/* Brand */}
       <div className="flex flex-col mb-5 relative">
@@ -40,35 +87,74 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
       {/* Status Card */}
       <div className="flex flex-col gap-3 mb-4">
         <span className="text-[11px] uppercase tracking-[0.3em] opacity-60 font-bold">Status</span>
-        <div className="bg-white/5 border border-white/10 rounded-[32px] p-4 flex flex-col relative overflow-hidden group backdrop-blur-2xl">
+        <div className="bg-white/5 border border-white/10 rounded-[32px] p-4 flex flex-col relative group backdrop-blur-2xl">
           <div className="flex justify-between items-start mb-3">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold opacity-80">↑ 23.8%</span>
+              <span className="text-sm font-semibold opacity-80">
+                {humidity > 50 ? '↑' : '↓'} {humidity}%
+              </span>
             </div>
-            <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-[10px] opacity-60">?</div>
+            <div 
+              className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-[10px] opacity-60 cursor-help hover:bg-white/20 transition-all"
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+            >
+                ?
+            </div>
           </div>
 
           <div className="h-20 w-full mb-3 relative">
              <ResponsiveContainer width="100%" height="100%">
-               <AreaChart data={miniChartData}>
-                 <defs>
-                   <linearGradient id="miniGrad" x1="0" y1="0" x2="0" y2="1">
-                     <stop offset="0%" stopColor="#fbbf24" stopOpacity={0.6} />
-                     <stop offset="100%" stopColor="#fbbf24" stopOpacity={0} />
-                   </linearGradient>
-                 </defs>
-                 <Area 
-                   type="basis" 
-                   dataKey="val" 
-                   stroke="#fbbf24" 
-                   strokeWidth={3} 
-                   fill="url(#miniGrad)" 
-                 />
-               </AreaChart>
+                <AreaChart data={dynamicMiniChart}>
+                  <defs>
+                    <linearGradient id="miniGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor={statusInfo.color} stopOpacity={0.6} />
+                      <stop offset="100%" stopColor={statusInfo.color} stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <Area 
+                    type="basis" 
+                    dataKey="val" 
+                    stroke={statusInfo.color} 
+                    strokeWidth={3} 
+                    fill="url(#miniGrad)" 
+                    isAnimationActive={true}
+                  />
+                </AreaChart>
              </ResponsiveContainer>
              
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-black text-[11px] font-bold px-4 py-2 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
-               Dangerous
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
+               <div 
+                 className="bg-white text-black text-[11px] font-bold px-4 py-2 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-colors duration-500 cursor-help"
+                 style={{ color: statusInfo.color }}
+               >
+                 {statusInfo.label}
+               </div>
+
+               <AnimatePresence>
+                {showTooltip && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 w-[240px] bg-black/90 border border-white/10 backdrop-blur-2xl p-4 rounded-2xl z-[100] shadow-2xl pointer-events-none"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5">
+                        <Info className="w-4 h-4 text-white opacity-40" />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] uppercase tracking-widest font-bold opacity-40">Durum Bilgisi</span>
+                        <p className="text-[12px] leading-relaxed text-white/90 font-medium">
+                          {statusInfo.description}
+                        </p>
+                      </div>
+                    </div>
+                    {/* Tooltip Arrow */}
+                    <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-black/90 border-b border-r border-white/10 rotate-45" />
+                  </motion.div>
+                )}
+               </AnimatePresence>
              </div>
           </div>
 
@@ -92,7 +178,7 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
            </div>
         </div>
 
-        <div className="relative flex-1 flex items-center justify-center overflow-visible">
+        <div className="relative flex-1 flex items-center justify-center overflow-hidden">
            
            {/* Side Globes (Carousel effect) */}
            <div className="absolute -left-40 w-52 h-52 bg-white/5 rounded-full blur-[1px] opacity-10 border border-white/10" />

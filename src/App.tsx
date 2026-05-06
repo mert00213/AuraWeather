@@ -76,6 +76,7 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recentSearches, setRecentSearches] = useState<WeatherData[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   const handleSearch = async (city: string) => {
     setLoading(true);
@@ -87,7 +88,7 @@ const App: React.FC = () => {
       // Update recent searches (avoid duplicates and keep last 2)
       setRecentSearches(prev => {
         const filtered = prev.filter(item => item.name !== data.name);
-        return [data, ...filtered].slice(0, 2);
+        return [data, ...filtered].slice(0, 10);
       });
 
     } catch (err: any) {
@@ -177,8 +178,9 @@ const App: React.FC = () => {
                 <WeatherCard 
                   key="main-card" 
                   data={weatherData} 
-                  recentSearches={recentSearches}
+                  recentSearches={recentSearches.slice(0, 2)}
                   onRecentClick={(cityData) => setWeatherData(cityData)}
+                  onSeeAll={() => setShowHistory(true)}
                 />
               ) : (
                 <div className="flex-1 flex flex-col items-center justify-center opacity-30 gap-8">
@@ -200,6 +202,61 @@ const App: React.FC = () => {
           )}
         </div>
       </motion.div>
+
+      {/* History Modal */}
+      <AnimatePresence>
+        {showHistory && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 lg:p-8">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowHistory(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md" 
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-2xl bg-[#1a1c1e]/80 backdrop-blur-3xl border border-white/10 rounded-[40px] shadow-2xl overflow-hidden flex flex-col p-8 text-white"
+            >
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-light tracking-widest uppercase opacity-80">Search History</h2>
+                <button 
+                  onClick={() => setShowHistory(false)}
+                  className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar grid grid-cols-1 md:grid-cols-2 gap-4">
+                {recentSearches.map((city, idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => {
+                      setWeatherData(city);
+                      setShowHistory(false);
+                    }}
+                    className="bg-white/5 border border-white/10 rounded-[32px] p-5 flex flex-col gap-4 backdrop-blur-xl hover:bg-white/15 transition-all text-left group"
+                  >
+                    <div className="flex justify-between items-start">
+                       <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="w-3 h-3 rounded-full bg-white/60" />
+                       </div>
+                       <span className="text-3xl font-light">{Math.round(city.main.temp)}°</span>
+                    </div>
+                    <div className="flex flex-col">
+                       <span className="text-lg font-medium">{city.name}, {city.sys.country}</span>
+                       <span className="text-sm opacity-60 uppercase tracking-widest font-light">{city.weather[0].description}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
