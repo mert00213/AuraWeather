@@ -35,41 +35,150 @@ const backgroundMap: Record<string, string> = {
   Default: bgClear,
 };
 
-const Rain = () => (
-  <div className="rain-container">
-    {[...Array(50)].map((_, i) => (
-      <div 
-        key={i} 
-        className="rain-drop" 
-        style={{ 
-          left: `${Math.random() * 100}%`, 
-          animationDuration: `${0.5 + Math.random() * 0.5}s`,
-          animationDelay: `${Math.random() * 2}s`,
-          opacity: Math.random() * 0.5
-        }} 
-      />
-    ))}
-  </div>
-);
+// Pre-generate random values to prevent re-randomization on re-renders
+const useRandomValues = (count: number) => {
+  return React.useMemo(() => 
+    Array.from({ length: count }, () => ({
+      left: Math.random() * 100,
+      duration: Math.random(),
+      delay: Math.random(),
+      opacity: Math.random(),
+      size: Math.random(),
+    })), [count]
+  );
+};
 
-const Snow = () => (
-  <div className="snow-container">
-    {[...Array(50)].map((_, i) => (
-      <div 
-        key={i} 
-        className="snow-flake" 
-        style={{ 
-          left: `${Math.random() * 100}%`, 
-          animationDuration: `${3 + Math.random() * 5}s`,
-          animationDelay: `${Math.random() * 5}s`,
-          opacity: Math.random() * 0.5
-        }} 
-      />
-    ))}
-  </div>
-);
+const RainEffect = () => {
+  const fgDrops = useRandomValues(40);
+  const midDrops = useRandomValues(60);
+  const bgDrops = useRandomValues(35);
+  const splashes = useRandomValues(15);
 
-const SunnyGlow = () => <div className="sunny-glow" />;
+  return (
+    <div className="rain-container">
+      {/* Foreground rain — thick, fast, bright */}
+      {fgDrops.map((v, i) => (
+        <div key={`fg-${i}`} className="rain-drop-fg" style={{
+          left: `${v.left}%`,
+          animationDuration: `${0.4 + v.duration * 0.3}s`,
+          animationDelay: `${v.delay * 1.5}s`,
+          opacity: 0.5 + v.opacity * 0.5,
+        }} />
+      ))}
+      {/* Mid-layer rain */}
+      {midDrops.map((v, i) => (
+        <div key={`mid-${i}`} className="rain-drop-mid" style={{
+          left: `${v.left}%`,
+          animationDuration: `${0.5 + v.duration * 0.4}s`,
+          animationDelay: `${v.delay * 2}s`,
+          opacity: 0.3 + v.opacity * 0.4,
+        }} />
+      ))}
+      {/* Background rain — distant */}
+      {bgDrops.map((v, i) => (
+        <div key={`bg-${i}`} className="rain-drop-bg" style={{
+          left: `${v.left}%`,
+          animationDuration: `${0.7 + v.duration * 0.5}s`,
+          animationDelay: `${v.delay * 2.5}s`,
+          opacity: 0.15 + v.opacity * 0.2,
+        }} />
+      ))}
+      {/* Splash at bottom */}
+      {splashes.map((v, i) => (
+        <div key={`splash-${i}`} className="rain-splash" style={{
+          left: `${v.left}%`,
+          animationDuration: `${0.6 + v.duration * 0.4}s`,
+          animationDelay: `${v.delay * 2}s`,
+        }} />
+      ))}
+      {/* Mist overlay */}
+      <div className="rain-mist" />
+    </div>
+  );
+};
+
+const SnowEffect = () => {
+  const fgFlakes = useRandomValues(25);
+  const midFlakes = useRandomValues(40);
+  const bgFlakes = useRandomValues(30);
+
+  return (
+    <div className="snow-container">
+      {/* Foreground snow — large and slow */}
+      {fgFlakes.map((v, i) => (
+        <div key={`fg-${i}`} className="snow-flake-fg" style={{
+          left: `${v.left}%`,
+          animationDuration: `${6 + v.duration * 6}s, ${3 + v.size * 4}s`,
+          animationDelay: `${v.delay * 8}s, ${v.delay * 3}s`,
+          width: `${5 + v.size * 3}px`,
+          height: `${5 + v.size * 3}px`,
+        }} />
+      ))}
+      {/* Mid-layer snow */}
+      {midFlakes.map((v, i) => (
+        <div key={`mid-${i}`} className="snow-flake-mid" style={{
+          left: `${v.left}%`,
+          animationDuration: `${5 + v.duration * 5}s, ${4 + v.size * 3}s`,
+          animationDelay: `${v.delay * 10}s, ${v.delay * 5}s`,
+        }} />
+      ))}
+      {/* Background snow — tiny and blurred */}
+      {bgFlakes.map((v, i) => (
+        <div key={`bg-${i}`} className="snow-flake-bg" style={{
+          left: `${v.left}%`,
+          animationDuration: `${4 + v.duration * 4}s, ${5 + v.size * 4}s`,
+          animationDelay: `${v.delay * 7}s, ${v.delay * 4}s`,
+        }} />
+      ))}
+      {/* Ground shimmer */}
+      <div className="snow-ground" />
+    </div>
+  );
+};
+
+const ThunderstormEffect = () => {
+  const fgDrops = useRandomValues(50);
+  const midDrops = useRandomValues(40);
+
+  return (
+    <>
+      {/* Rain layer */}
+      <div className="rain-container">
+        {fgDrops.map((v, i) => (
+          <div key={`fg-${i}`} className="rain-drop-fg" style={{
+            left: `${v.left}%`,
+            animationDuration: `${0.35 + v.duration * 0.25}s`,
+            animationDelay: `${v.delay * 1.2}s`,
+            opacity: 0.5 + v.opacity * 0.5,
+          }} />
+        ))}
+        {midDrops.map((v, i) => (
+          <div key={`mid-${i}`} className="rain-drop-mid" style={{
+            left: `${v.left}%`,
+            animationDuration: `${0.4 + v.duration * 0.3}s`,
+            animationDelay: `${v.delay * 1.8}s`,
+            opacity: 0.3 + v.opacity * 0.4,
+          }} />
+        ))}
+        <div className="rain-mist" />
+      </div>
+      {/* Lightning flashes */}
+      <div className="lightning-container">
+        <div className="lightning-flash" />
+        <div className="lightning-flash-2" />
+        <div className="lightning-bolt" style={{ left: '35%' }} />
+        <div className="lightning-bolt" style={{ left: '65%', animationDelay: '3.5s' }} />
+      </div>
+    </>
+  );
+};
+
+const SunnyGlow = () => (
+  <>
+    <div className="sunny-glow" />
+    <div className="sun-rays" />
+  </>
+);
 
 const CloudsEffect = () => (
   <div className="cloud-container">
@@ -86,6 +195,14 @@ const CloudsEffect = () => (
         }} 
       />
     ))}
+  </div>
+);
+
+const FogEffect = () => (
+  <div className="fog-container">
+    <div className="fog-layer" style={{ animationDuration: '25s', top: '10%' }} />
+    <div className="fog-layer-2" style={{ animationDuration: '35s', top: '40%' }} />
+    <div className="fog-layer" style={{ animationDuration: '30s', top: '65%', opacity: 0.7 }} />
   </div>
 );
 
@@ -169,10 +286,12 @@ const App: React.FC = () => {
         <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
         
         {/* Animated Weather Overlays */}
-        {weatherMain === 'Rain' || weatherMain === 'Drizzle' || weatherMain === 'Thunderstorm' ? <Rain /> : null}
-        {weatherMain === 'Snow' ? <Snow /> : null}
+        {weatherMain === 'Rain' || weatherMain === 'Drizzle' ? <RainEffect /> : null}
+        {weatherMain === 'Thunderstorm' ? <ThunderstormEffect /> : null}
+        {weatherMain === 'Snow' ? <SnowEffect /> : null}
         {weatherMain === 'Clear' ? <SunnyGlow /> : null}
         {weatherMain === 'Clouds' ? <CloudsEffect /> : null}
+        {weatherMain === 'Mist' || weatherMain === 'Haze' || weatherMain === 'Fog' || weatherMain === 'Smoke' ? <FogEffect /> : null}
       </div>
 
       {/* Main UI Container */}
