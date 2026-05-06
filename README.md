@@ -40,6 +40,7 @@ AuraWeather isn't just a data panel; it's an atmospheric immersion.
 - **🕒 Time-Aware UI**: Automatically detects the searched city's sunrise/sunset times to shift the visual mood (e.g., transitioning to a Starry Night or a Golden Sunset).
 - **📈 High-Precision Analytics**: Responsive temperature trend charts using Recharts with a custom wavy basis-type visualization.
 - **🛡️ Biometric Status Alerts**: A smart "Status" module that analyzes UV Index and Humidity to provide health and comfort recommendations.
+- **✨ Smart Daily Insights**: An AI-driven recommendation engine that provides personalized advice on clothing, outdoor activities, and health safety based on current meteorological conditions.
 - **📜 Smart Search History**: Quickly toggle between your last 10 searched cities with a dedicated high-end modal interface.
 
 ---

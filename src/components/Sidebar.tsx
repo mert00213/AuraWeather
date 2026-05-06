@@ -165,10 +165,10 @@ const Sidebar: React.FC<SidebarProps> = ({ data }) => {
         </div>
       </div>
 
-      {/* Select Area Section - Carousel Look */}
+      {/* Area Section - Carousel Look */}
       <div className="flex flex-col gap-3 relative">
          <div className="flex justify-between items-center z-10">
-            <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-medium">Select Area</span>
+            <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-medium">Area</span>
             <Navigation className="w-4 h-4 rotate-[15deg] fill-white opacity-80" />
          </div>
 
